@@ -1,7 +1,7 @@
 package com.uz.biblio.repository.impl;
 
 import com.uz.biblio.beans.Book;
-import com.uz.biblio.repository.GeneralDao;
+import com.uz.biblio.repository.IGeneralRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,9 +15,9 @@ import java.util.List;
 
 
 @Repository
-public class GeneralDaoImpl implements GeneralDao {
+public class GeneralRepositoryImpl implements IGeneralRepository {
 
-    public Logger log = LoggerFactory.getLogger(GeneralDaoImpl.class);
+    public Logger log = LoggerFactory.getLogger(GeneralRepositoryImpl.class);
     @Autowired
     private JdbcTemplate jdbcTemplate;
 

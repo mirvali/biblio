@@ -22,7 +22,13 @@
 
             <column name="description" type="varchar(150)"/>
 
-
-        </createTable>
+        </createTable>   
+        
+        <createSequence sequenceName="book_id_seq"
+                        cycle="true"
+                        startValue="6"
+                        incrementBy="1"
+                        minValue="1"
+                        maxValue="999999"/>
     </changeSet>
 </databaseChangeLog>

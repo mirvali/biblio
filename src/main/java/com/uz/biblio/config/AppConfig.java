@@ -1,2 +1,17 @@
-package com.uz.biblio.config;public class AppConfig {
+package com.uz.biblio.config;
+
+import com.zaxxer.hikari.HikariDataSource;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.jdbc.core.JdbcTemplate;
+
+@Configuration
+public class AppConfig {
+
+    @Bean
+    public JdbcTemplate jdbcTemplate(HikariDataSource dataSource) {
+        return new JdbcTemplate(dataSource);
+    }
+
+
 }

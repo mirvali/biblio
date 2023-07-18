@@ -24,12 +24,12 @@
         <insert tableName="book">
             <column name="id" valueNumeric="4"/>
             <column name="title" value="War and Peace"/>
-            <column name="author" value="'L. Tolstoy"/>
+            <column name="author" value="L. Tolstoy"/>
         </insert>
         <insert tableName="book">
             <column name="id" valueNumeric="5"/>
             <column name="title" value="Dead Souls"/>
-            <column name="author" value="'N. Gogol"/>
+            <column name="author" value="N. Gogol"/>
         </insert>
     </changeSet>
 </databaseChangeLog>

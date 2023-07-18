@@ -1,4 +1,4 @@
 package com.uz.biblio.repository;
 
-public interface GeneralDao {
+public interface IGeneralRepository {
 }
