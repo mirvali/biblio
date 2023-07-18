@@ -3,14 +3,18 @@ package com.uz.biblio.repository.impl;
 import com.uz.biblio.beans.Book;
 import com.uz.biblio.beans.BookSymbol;
 import com.uz.biblio.repository.IBookRepository;
-import org.springframework.stereotype.Component;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 import java.util.List;
 
 
-@Component
-public class BookRepository extends GeneralRepositoryImpl implements IBookRepository {
+@Service
+@RequiredArgsConstructor
+public class BookRepository implements IBookRepository {
 
-    private final String SQL_INSERT_BOOK = "insert into book(id, title, author, description) values(?,?,?,?)";
+    private final GeneralJdbcHelper generalRepositoryImpl;
+
+    private final String SQL_INSERT_BOOK = "insert into book(id, title, author, description) values(?,?,?,?) RETURNING id";
     private final String SQL_All_BOOK = "select * from book order by title desc";
     private final String SQL_GET_AUTHOR_BOOK = "SELECT author, STRING_AGG(title, ',' ORDER BY title) AS title\n" +
             "FROM  book\n" +
@@ -23,24 +27,23 @@ public class BookRepository extends GeneralRepositoryImpl implements IBookReposi
             "limit 10";
 
 
-
     @Override
     public int save(Book book) {
-        return insertObject(SQL_INSERT_BOOK,book);
+        return generalRepositoryImpl.insertObject(SQL_INSERT_BOOK,book);
     }
 
     @Override
     public List<Book> getAllSortedByTitleDesc() {
-        return getList(SQL_All_BOOK, Book.class);
+        return generalRepositoryImpl.getList(SQL_All_BOOK, Book.class);
     }
 
     @Override
     public List<Book> getAllGroupByAuthor() {
-        return getList(SQL_GET_AUTHOR_BOOK, Book.class);
+        return generalRepositoryImpl.getList(SQL_GET_AUTHOR_BOOK, Book.class);
     }
 
     @Override
     public List<BookSymbol> findBySymbol(String param) {
-        return getListWithParams(SQL_GET_BY_SYMBOL,new Object[]{param, param}, BookSymbol.class);
+        return generalRepositoryImpl.getObjectListByParam(SQL_GET_BY_SYMBOL,new Object[]{param, param}, BookSymbol.class);
     }
 }

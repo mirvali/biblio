@@ -2,8 +2,8 @@ package com.uz.biblio.controller;
 
 import com.uz.biblio.beans.Book;
 import com.uz.biblio.beans.BookSymbol;
-import com.uz.biblio.service.BookService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.uz.biblio.service.BookServiceImpl;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,15 +13,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping(path="/api")
+@RequiredArgsConstructor
+@RequestMapping(path="/api/book")
 public class BookController {
 
-    private final BookService bookService;
-
-    @Autowired
-    public BookController(BookService bookService) {
-        this.bookService = bookService;
-    }
+    private final BookServiceImpl bookService;
 
     @GetMapping("/getall")
     public ResponseEntity<List<Book>> getAll() {
@@ -64,11 +60,17 @@ public class BookController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<Integer> insertBook(@RequestBody Book book) {
+    public ResponseEntity<String> insertBook(@RequestBody Book book) {
         try {
-            return new ResponseEntity<>(bookService.insertBook(book), HttpStatus.OK);
-        }catch (Exception e){
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            int code = bookService.insertBook(book);
+            if (code > 1) {
+                return new ResponseEntity<>("Saved successfuly!", HttpStatus.OK);
+            }
+            return new ResponseEntity<>("Something wrong while saving book!", HttpStatus.OK);
+        } catch (NullPointerException ne){
+            return new ResponseEntity<>("Please fill the mandatory fields!",HttpStatus.BAD_REQUEST);
+        } catch (Exception e){
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
         }
     }
 

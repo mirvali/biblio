@@ -3,16 +3,16 @@ package com.uz.biblio.service;
 import com.uz.biblio.beans.Book;
 import com.uz.biblio.beans.BookSymbol;
 import com.uz.biblio.repository.impl.BookRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class BookService {
-    @Autowired
-    private BookRepository bookRepository;
+@RequiredArgsConstructor
+public class BookServiceImpl implements IBookService {
+    private final BookRepository bookRepository;
 
     public List<Book> getAllBookList(){
         return bookRepository.getAllSortedByTitleDesc();

@@ -1,25 +1,22 @@
 package com.uz.biblio.repository.impl;
 
 import com.uz.biblio.beans.Book;
-import com.uz.biblio.repository.IGeneralRepository;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Component;
 
 import java.sql.SQLException;
 import java.util.Collections;
 import java.util.List;
 
 
-@Repository
-public class GeneralRepositoryImpl implements IGeneralRepository {
-
-    public Logger log = LoggerFactory.getLogger(GeneralRepositoryImpl.class);
-    @Autowired
-    private JdbcTemplate jdbcTemplate;
+@Component
+@RequiredArgsConstructor
+public class GeneralJdbcHelper {
+    public Logger log;
+    private final JdbcTemplate jdbcTemplate;
 
     public List getList(String sql, Class clazz)  {
         try {
@@ -31,7 +28,7 @@ public class GeneralRepositoryImpl implements IGeneralRepository {
         }
 
     }
-    public List getListWithParams(String sql, Object[] args, Class clazz)
+    public List getObjectListByParam(String sql, Object[] args, Class clazz)
     {
         try {
             BeanPropertyRowMapper rowMapper = BeanPropertyRowMapper.newInstance(clazz);
@@ -53,17 +50,14 @@ public class GeneralRepositoryImpl implements IGeneralRepository {
                                     throw new SQLException("Unable to retrieve value from sequence.");
                                 }
                             });
-                    return jdbcTemplate.update(sql, new Object[] {id,
+                    return jdbcTemplate.queryForObject(sql, new Object[] {id,
                                                                     book.getTitle(),
                                                                     book.getAuthor(),
-                                                                    book.getDescription()});
+                                                                    book.getDescription()}, Integer.class);
         }catch (Exception e){
             log.error("getObject Exception "+ e.getMessage());
             return -1;
         }
     }
-
-
-
 
 }
